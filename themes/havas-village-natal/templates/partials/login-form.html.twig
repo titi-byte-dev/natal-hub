@@ -1,0 +1,52 @@
+{% set client_side_validation = form.client_side_validation is not null ? form.client_side_validation : config.plugins.form.client_side_validation|default(true) %}
+{% set inline_errors = form.inline_errors is not null ? form.inline_errors : config.plugins.form.inline_errors(false) %}
+
+<section id="grav-login" class="flex flex-wrap justify-center text-center">
+
+    {% if page.template == 'login' or show_login_form %}
+        {% set user = grav.user %}
+        {% if user.authenticated and user.authorized %}
+            <h4>{{ 'PLUGIN_LOGIN.WELCOME'|t }} <strong>{{ user.fullname ?: user.username }}</strong></h4>
+            <hr>
+            <a class="button logout" href="{{ uri.addNonce(base_url_relative ~ uri.path ~ '/task' ~ config.system.param_sep ~ 'login.logout', 'logout-form', 'logout-nonce')|e }}">{{ 'PLUGIN_LOGIN.BTN_LOGOUT'|t }}</a>
+
+        {% elseif user.authenticated and user.twofa_enabled %}
+            {% include 'partials/login-twofa.html.twig' %}
+
+        {% else %}
+            {{ content|raw }}
+
+            {# NEW WAY OF INCLUDING 3RD PARTY LOGIN OPTIONS #}
+            {% for template in grav.login.getProviderLoginTemplates %}
+                {% include template %}
+            {% endfor %}
+
+            <form method="post" action="{{ (base_url_relative ~ uri.path)|e }}" class="{{ form_outer_classes }} login-form w-full md:w-1/2 lg:w-1/3">
+
+                {# OLD WAY OF INCLUDING 3RD PARTY LOGIN OPTIONS #}
+                {% if grav.twig.plugins_hooked_loginPage %}
+                    {% for label in grav.twig.plugins_hooked_loginPage %}
+                        {% include label %}
+                    {% endfor %}
+                {% endif %}
+
+                {% for field in form.fields %}
+                    {% set value = field.name == 'username' ? username : '' %}
+                    {% if field.type %}
+                        {% include ["forms/fields/#{field.type}/#{field.type}.html.twig", 'forms/fields/text/text.html.twig'] %}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="{{ form_button_outer_classes ?: 'form-actions secondary-accent' }}">
+
+                    <button class="{{ form_button_classes ?: 'button primary' }} ml-1 w-full text-white bg-primary uppercase h-10 font-black" type="submit"  name="task" value="login.login">ENTRAR</button>
+                </div>
+
+                {{ nonce_field('login-form', 'login-form-nonce')|raw }}
+            </form>
+
+        {% endif %}
+
+    {% endif %}
+
+</section>

@@ -1,0 +1,42 @@
+name: Havas Village Natal
+slug: havas-village-natal
+type: theme
+version: 1.0.1
+description: O natal da Havas Village
+icon: rebel
+author:
+  name: Ricardo
+  email: ricardo@urbansquid.london
+homepage: https://github.com/fullsix-at-havas-team/havas-village-natal
+demo: https://nataldovillage.havas.pt
+keywords: grav, theme, etc
+bugs: https://github.com/fullsix-at-havas-team/havas-village-natal/issues
+readme: https://github.com/fullsix-at-havas-team/havas-village-natal/blob/develop/README.md
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.6.0' }
+
+form:
+    validation: loose
+    fields:
+        dropdown.enabled:
+            type: toggle
+            label: Dropdown in Menu
+            highlight: 1
+            default: 1
+            options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+            validate:
+                type: bool
+        production:
+            type: toggle
+            label: Production Mode
+            highlight: 1
+            default: 1
+            options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+            validate:
+                type: bool

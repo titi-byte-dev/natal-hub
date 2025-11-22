@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id              String       @id @default(uuid())
+  name            String
+  slug            String       @unique
+  domain          String?
+  logoUrl         String?
+  settings        String       @default("{}")
+  subscriptionTier String      @default("free")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  users           User[]
+  contests        Contest[]
+
+  @@index([slug])
+  @@map("organizations")
+}
+
+model User {
+  id             String       @id @default(uuid())
+  organizationId String
+  email          String
+  passwordHash   String
+  name           String?
+  role           String       @default("admin")
+  isActive       Boolean      @default(true)
+  lastLogin      DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, email])
+  @@index([organizationId])
+  @@map("users")
+}
+
+model Contest {
+  id                      String             @id @default(uuid())
+  organizationId          String
+  title                   String
+  slug                    String
+  description             String?
+  startDate               DateTime
+  endDate                 DateTime
+  votingStartDate         DateTime?
+  votingEndDate           DateTime?
+  maxVotesPerUser         Int                @default(3)
+  allowSelfVote           Boolean            @default(false)
+  requireEmailVerification Boolean           @default(true)
+  status                  String             @default("draft")
+  settings                String             @default("{}")
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+
+  organization            Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  categories              Category[]
+  submissions             Submission[]
+  votes                   Vote[]
+  verificationCodes       VerificationCode[]
+
+  @@unique([organizationId, slug])
+  @@index([organizationId])
+  @@index([status])
+  @@map("contests")
+}
+
+model Category {
+  id          String      @id @default(uuid())
+  contestId   String
+  name        String
+  slug        String
+  orderIndex  Int         @default(0)
+  createdAt   DateTime    @default(now())
+
+  contest     Contest     @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@unique([contestId, slug])
+  @@index([contestId])
+  @@map("categories")
+}
+
+model Submission {
+  id                String      @id @default(uuid())
+  contestId         String
+  categoryId        String?
+  participantName   String
+  participantEmail  String
+  imageUrl          String
+  imageThumbnailUrl String?
+  description       String?
+  voteCount         Int         @default(0)
+  status            String      @default("pending")
+  metadata          String      @default("{}")
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  contest           Contest     @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  category          Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  votes             Vote[]
+
+  @@index([contestId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([voteCount(sort: Desc)])
+  @@map("submissions")
+}
+
+model Vote {
+  id              String      @id @default(uuid())
+  contestId       String
+  submissionId    String
+  voterEmail      String
+  verificationCode String?
+  isVerified      Boolean     @default(false)
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime    @default(now())
+
+  contest         Contest     @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  submission      Submission  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([contestId, submissionId, voterEmail])
+  @@index([contestId, voterEmail])
+  @@index([submissionId])
+  @@map("votes")
+}
+
+model VerificationCode {
+  id          String      @id @default(uuid())
+  contestId   String
+  email       String
+  code        String
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime    @default(now())
+
+  contest     Contest     @relation(fields: [contestId], references: [id], onDelete: Cascade)
+
+  @@index([email, contestId])
+  @@index([expiresAt])
+  @@map("verification_codes")
+}
+

@@ -1,0 +1,12 @@
+{% extends "forms/field.html.twig" %}
+
+{% block group %}
+        {% block input %}
+                {% if not object.media.images|first %}
+                        Não tem imagem ainda
+                {% endif %}
+                <div class="form-input-wrapper {{ field.size }} {{ field.wrapper_classes }}">
+                        <a href="{{ object.media.images|first.url }}" target="_blank"><img class="{{ field.img_classes }}" style="max-width:200px;" src="{{ object.media.images|first.url }}" /></a>
+                </div>
+        {% endblock %}
+{% endblock %}

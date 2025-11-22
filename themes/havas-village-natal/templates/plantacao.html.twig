@@ -1,0 +1,144 @@
+{% extends 'partials/base.html.twig' %}
+{% do form.init %}
+
+{% block body %}
+    <div id="main_plantacao" class="flex-grow flex flex-col relative {{ page.header.body_classes|e }}">
+       <div class="container mx-auto">
+            <section id="header" class="relative">
+                <img id="logos" class="absolute w-20 xl:w-28" src="{{ url('theme://images/GIF_SBG.gif') }}">
+                <a href="#participation-grid"><img class="scroll-down absolute max-auto w-12" src="{{ url('theme://images/scroll-down.svg') }}"></a>
+            </section>
+           <section id="form" class="relative px-5 md:px-0">
+               <div class="w-full md:w-1/2 xl:w-1/3 mx-auto xl:py-12">
+                   <h3 class="text-white text-center">Não é só para enfeitar</h3>
+                   <p class="text-white text-center">Mostra-nos o tua árvore de Natal</p>
+                   {% include 'forms/form.html.twig' with { form: forms('profile-form') } %}
+               </div>
+           </section>
+           <section id="participation-grid" class="relative">
+               <div class="items-center px-2 md:px-10">
+                   <h3 class="text-center text-white">As árvores do Village na natureza</h3>
+                   <div class="flex flex-wrap flex-col flex-grow relative"
+                        id="grid_wrapper"
+                        x-ref="grid_p"
+                        x-data="searchApp()"
+                        x-init="fetch()">
+                       <div class="filters w-full flex flex-wrap justify-center items-center my-5">
+                           <input type="radio" id="todas" name="todas" checked value="" x-model="query.team"
+                                  x-on:change="selected = true;query.page = 1;fetch(true);">
+                           <label for="todas" class="cursor-pointer flex whitespace-nowrap mb-3 md:mb-0" :class="{'isSelected':isSelected('')}">
+                               <img class="mr-1" src="{{ url('theme://images/done.svg') }}">Todas
+                           </label><br>
+                           {% for opt in site.team %}
+                               <input type="radio" id="{{ opt }}" name="{{ opt }}" value="{{ opt }}" x-model="query.team"
+                                      x-on:change="selected = true;query.page = 1;fetch(true);">
+                               <label for="{{ opt }}" class="cursor-pointer flex whitespace-nowrap mb-3 md:mb-0" :class="{'isSelected':isSelected('{{ opt }}')}"><img class="mr-1" src="{{ url('theme://images/done.svg') }}">{{ opt }}</label><br>
+                           {% endfor %}
+                       </div>
+                       <div class="w-full flex flex-wrap justify-center justify-between mb-2">
+                           <div class="mb-3 md:md-0 w-full md:w-1/4">
+                               {% set contacts = grav.get('flex').collection('contacts') %}
+                               <p class="text-sm text-center md:text-left">{{ contacts|length }} árvores</p>
+                           </div>
+                           <div class="mb-3 md:md-0 w-full md:w-1/4">
+                               <div class="search-wrapper border-b-2 w-full flex justify-center">
+                                   <label>
+                                       <select class="border-none focus:ring-0 text-sm" x-model="query.sort"
+                                               x-on:change="query.page = 1;fetch(true)">
+                                           <option value="" selected>Mais Recentes</option>
+                                           <option value="nome">Ordem alfabética</option>
+                                           <option value="likes">Mais Votadas</option>
+                                       </select>
+                                   </label>
+                               </div>
+                           </div>
+                       </div>
+                       <div x-ref="overlay" id="overlay" x-show="!finished"
+                            x-transition:enter="ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="ease-in duration-0"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            class="w-full h-full flex-grow flex flex-col justify-center items-center transition ease-in transform absolute z-10 ">
+                           <div class="spinner">
+                               <div class="spinner-item"></div>
+                               <div class="spinner-item"></div>
+                           </div>
+                       </div>
+                       <div x-ref="grid" id="grid" x-show="finished"
+                            x-transition:enter="ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="ease-in duration-0"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            class="w-full flex flex-wrap transition ease-in transform">
+                       </div>
+
+                       <div class="flex flex-nowrap w-full items-center justify-center text-center mt-2 mb-12">
+                           <a href="" @click.prevent="fetch()" class="btn">
+                               VER MAIS
+                           </a>
+                       </div>
+                   </div>
+               </div>
+           </section>
+       </div>
+        <img class="absolute bottom-0 left-0 w-32" src="{{ url('theme://images/triangles/small-red-triangle.svg') }}">
+        <img class="absolute bottom-0 right-0 w-20" src="{{ url('theme://images/triangles/small-pink-triangle.svg') }}">
+    </div>
+    <script>
+        let searchApp = () => {
+            return {
+                selected: false,
+                active: false,
+                finished: false,
+                query: {
+                    team: '',
+                    sort: '',
+                    page: 1,
+                },
+
+                totalTrees(){ return this.query.team|length },
+
+                isSelected(opt) { return this.query.team === opt },
+
+                makeURL() {
+                    let url = '/grid?per_page=18';
+
+                    if (this.query.page) {
+                        url = `${url}&page=${encodeURIComponent(this.query.page)}`;
+                    }
+                    if (this.query.team) {
+                        url = `${url}&team=${encodeURIComponent(this.query.team)}`;
+                    }
+                    if (this.query.sort) {
+                        url = `${url}&sort=${encodeURIComponent(this.query.sort)}`;
+                    }
+
+                    return url;
+                },
+
+                fetch(reset = false) {
+                    if (reset) {
+                        this.finished = false;
+                    }
+                    fetch(this.makeURL())
+                        .then(response => response.text())
+                        .then(html => {
+                            if (reset) {
+                                document.getElementById('grid').innerHTML = html;
+                                this.finished = true;
+                                this.query.page += 1;
+                            } else {
+                                document.getElementById('grid').innerHTML += html;
+                                this.finished = true;
+                                this.query.page += 1;
+                            }
+                        });
+                }
+            }
+        }
+    </script>
+{% endblock %}

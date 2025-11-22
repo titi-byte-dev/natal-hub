@@ -1,0 +1,30 @@
+enabled: true
+from: noreply@nataldovillage.pt
+from_name: 'Natal do Village'
+to: noreply@nataldovillage.pt
+to_name: 'Natal do Village'
+queue:
+  enabled: false
+  flush_frequency: '* * * * *'
+  flush_msg_limit: 10
+  flush_time_limit: 100
+mailer:
+  engine: smtp
+  smtp:
+    server: 185.11.166.29
+    port: 25
+    encryption: none
+    user: noreply@nataldovillage.pt
+    password: oA6qj1*7
+    auth_mode: null
+  sendmail:
+    bin: '/usr/sbin/sendmail -bs'
+content_type: text/html
+debug: false
+charset: null
+cc: null
+cc_name: null
+bcc: null
+reply_to: null
+reply_to_name: null
+body: null

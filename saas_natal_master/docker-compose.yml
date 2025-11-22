@@ -1,0 +1,28 @@
+# Docker Compose - OPCIONAL
+# Este ficheiro é apenas necessário se quiseres usar PostgreSQL em vez de SQLite
+# Para desenvolvimento simples, o SQLite é suficiente e não precisa de Docker
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: contest-postgres
+    environment:
+      POSTGRES_USER: contest
+      POSTGRES_PASSWORD: contest_password
+      POSTGRES_DB: contest_saas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contest"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis removido - não está a ser usado no código
+
+volumes:
+  postgres_data:

@@ -1,0 +1,114 @@
+<div x-cloak x-ref="modal" x-show.transition.opacity="open" class="vid-modal overflow-y-scroll p-0 md:p-5 fixed z-30 top-0 left-0 w-screen h-screen bg-black flex flex-col flex-wrap items-center justify-center" role="dialog" aria-modal="true">
+
+    <div class="modal_wrapper" @mousedown.away="open = false" @keydown.window.escape="open = false">
+
+        <div  class="text-white flex flex-wrap flex-col items-center justify-center relative">
+
+            <div id="modal-name" class="px-5 py-4 absolute text-black flex items-center justify-between">
+                <p class="text-sm font-bold" x-text="modal.nome"></p>
+            </div>
+
+            <button class="text-white absolute hidden sm:block" @click="open = false">
+                {% include 'partials/icons/close.html.twig' %}
+            </button>
+            <button class="absolute flex sm:hidden text-black" @click="open = false">
+                <img class="mr-2 w-2" src="{{ url('theme://images/voltar.svg') }}" style="display: -webkit-box;display: -ms-flexbox;display: -webkit-flex;" alt="">voltar
+            </button>
+
+            <div class="relative hidden sm:block">
+                <img id="modal-bg" class="relative" src="{{ url('theme://images/popup_desktop.png') }}" alt="">
+                <img id="modal-image" class="absolute" :src="modal.image" alt="">
+            </div>
+
+            <div class="relative sm:hidden">
+                <img id="modal-bg" class="relative" src="{{ url('theme://images/popup_mobile.png') }}" alt="">
+                <img id="modal-image" class="absolute" :src="modal.image" alt="">
+            </div>
+
+            <div id="rating" class="px-5 py-2 flex flex-wrap flex-col items-center justify-center absolute">
+                <img class="w-5" src="{{ url('theme://images/star.svg') }}" alt="">
+                <p class="mt-1 leading-tight font-bold text-black" x-text="modal.likes"></p>
+            </div>
+
+            <input type="hidden" id="modal_id" x-model="modal.id"/>
+        </div>
+
+{#        <div class="flex flex-wrap flex-col items-center justify-between px-5 pt-5 pb-4 my-0 md:my-2 bg-white text-black" x-data="votingApp()" @clear-message.window="message='';code='';type='';confirmed=false">#}
+{#            <p class="text-green text-xl lg:text-base font-bold font-helveticaCond text-center max-w-tiny" :class="{'hidden': type === 'success'}">Para votares nesta árvore de Natal coloca aqui o teu email:</p>#}
+{#            <div :class="{'text-red': type === 'error', 'text-green': type === 'success'}" class="font-helveticaCond" x-text="message"></div>#}
+{#            <div id="confirm_email_wrapper" x-show="!confirmed">#}
+{#                {% include 'forms/form.html.twig' with { form: forms('confirm_email') } %}#}
+{#            </div>#}
+{#            <div id="vote_wrapper" x-show="confirmed">#}
+{#                {% include 'forms/form.html.twig' with { form: forms('vote') } %}#}
+{#            </div>#}
+
+{#        </div>#}
+
+        <script>
+            let votingApp = () => {
+                return {
+                    email: '',
+                    confirmed: false,
+                    type: '',
+                    message: '',
+                    code: '',
+
+                    confirmVote() {
+
+                        const id = document.getElementById('modal_id').value;
+
+                        fetch('/submit_like',
+                            {
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: this.email + '@globalservs.com',
+                                    id: id,
+                                    code: this.code,
+                                }
+                            )})
+                            .then(response => response.json())
+                            .then(result => {
+                                this.type = result.type;
+                                this.message = result.message;
+
+                                if (this.type === 'success') {
+                                    this.confirmed = false;
+                                    // document.getElementById('confirm-email').style.display = 'none';
+                                }
+                            });
+                    },
+
+                    confirmEmail() {
+                        this.confirmed = true;
+                        const email = JSON.stringify({email: this.email + '@globalservs.com'});
+                        fetch('/send_email', {
+                            method: 'post',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: email
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                this.type = result.type;
+                                this.message = result.message;
+
+                                if (this.type !== 'success') {
+                                    this.confirmed = false;
+                                }
+                            })
+                            .catch(result => {
+                                this.type = result.type;
+                                this.message = result.message;
+                                this.confirmed = false;
+                            });
+                    }
+                }
+            }
+        </script>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+{% for object in collection %}
+    {% set obj_media = object.getMedia() %}
+    {% set image = obj_media[object.image|first.name].cropZoom(400,400).url|defined('https://dummyimage.com/600x600/a8a8a8/fff.jpg') %}
+
+    <div class="w-1/2 sm:w-1/3 lg:w-1/6 relative transform transition duration-300 cursor-pointer"
+         :class="{'item-active': active === 'item{{ loop.index0 }}'}"
+         @click="$dispatch('open-modal', {open: true, modal: {id: '{{ object.key }}',nome: '{{ object.nome }}', team: '{{ object.team }}', likes: '{{ object.likes }}', image: '{{ image }}'}})">
+        <div class="relative">
+            <img class="absolute bottom-0 left-0 w-16" src="{{ url('theme://images/open-modal.svg') }}" alt="">
+            <img src="{{ image }}" alt="">
+        </div>
+        <div class="text-wrapper text-center relative mb-5 mt-3 md:mb-8">
+            <p class="text-sm">{{ object.nome }}</p>
+            <div class="flex mx-auto justify-center items-center mt-2">
+                <img class="w-5 mr-2" src="{{ url('theme://images/star.svg') }}" alt=""><p class="text-sm font-bold">{{ object.likes }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}

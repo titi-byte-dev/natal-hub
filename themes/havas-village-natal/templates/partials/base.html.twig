@@ -1,0 +1,67 @@
+{% set theme_config = attribute(config.themes, config.system.pages.theme) %}
+{% set extension = config.theme.production ? '.min' : '' %}
+<!DOCTYPE html>
+<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
+<head>
+    {% block head %}
+        <meta charset="utf-8" />
+        <title>{% if header.title %}{{ header.title|e }} | {% endif %}{{ site.title|e }}</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% include 'partials/metadata.html.twig' %}
+
+        <link rel="icon" type="image/jpg" href="{{ url('theme://images/01_favicon.jpg')|e }}" />
+        <link rel="canonical" href="{{ page.url(true, true)|e }}" />
+    {% endblock head %}
+
+    {% block stylesheets %}
+        {% do assets.addCss('theme://build/css/app' ~ extension ~ '.css', 98) %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% do assets.addJs('theme://js/alpine' ~ extension ~ '.js', 98) %}
+    {% endblock %}
+
+    {% block assets deferred %}
+    {{ assets.css()|raw }}
+    {{ assets.js()|raw }}
+    {% endblock %}
+</head>
+{% set alpine %}
+$watch('open', value => {
+    const body = document.body;
+    const clearMessage = new CustomEvent('clear-message');
+    window.dispatchEvent(clearMessage);
+{#    document.getElementById('confirm-email').style.display = 'block';#}
+
+    if(!open) {
+{#        body.classList.remove('h-screen');#}
+        return body.classList.remove('overflow-hidden');
+    } else {
+{#        body.classList.add('h-screen');#}
+        return body.classList.add('overflow-hidden');
+    }
+});
+{% endset %}
+<body x-init="{{- alpine -}}" id="top" class="flex flex-col min-h-screen  {{ config.theme.production ?: 'debug-screens' }}" x-ref="top" x-data="{open: false, modal: {id: '', nome: '', team: '',  likes: '', image: ''}}" @open-modal.window="open = $event.detail.open, modal = $event.detail.modal">
+
+{% block body %}
+
+{% endblock %}
+
+{% block footer %}
+    <div class="footer p-8 flex items-center justify-center bg-black text-center text-white">
+        <p class="text-xs">Havas 2020. Todos os direiros reservados.</p>
+    </div>
+{% endblock %}
+
+{% include 'partials/svg-filter.html.twig' %}
+{% include 'partials/modal.html.twig' %}
+
+{% block bottom %}
+    {{ assets.js('bottom')|raw }}
+{% endblock %}
+
+</body>
+</html>

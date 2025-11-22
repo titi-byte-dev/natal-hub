@@ -1,0 +1,51 @@
+{% set team = uri.query('team') %}
+{% set search = uri.query('query') %}
+{% set sort = uri.query('sort') %}
+{% set page = uri.query('page')|defined(1) %}
+{% set limit = uri.query('per_page') %}
+{% set start = (page - 1) * limit %}
+
+{% set contacts = grav.get('flex').collection('contacts') %}
+
+{% if sort %}
+    {% switch sort %}
+        {% case 'likes' %}
+            {% set contacts = contacts.filterBy({'published': true}).sort({likes: 'DESC'}) %}
+        {% case 'nome' %}
+            {% set contacts = contacts.filterBy({'published': true}).sort({nome: 'ASC'}) %}
+        {% case 'date' %}
+            {% set contacts = contacts.filterBy({'published': true}).sort({date: 'ASC'}) %}
+        {% default %}
+            {% set contacts = contacts.filterBy({'published': true}) %}
+    {% endswitch %}
+{% else %}
+    {% set contacts = contacts.filterBy({'published': true}) %}
+{% endif %}
+
+{% if search %}
+
+    {% set contacts = contacts.search(search) %}
+
+{% else %}
+
+    {% if team %}
+        {% set contacts = contacts.filterBy({'team': team}) %}
+    {% endif %}
+
+{% endif %}
+
+{% set count = contacts|length  %}
+
+{% set num_pages = (count / 18)|round(0, 'ceil') %}
+
+{% set contacts = contacts.limit(start, limit) %}
+
+{% if contacts|length %}
+    <input type="hidden" id="grid_count_page_{{ page }}" value="{{ count }}">
+    {% render contacts layout: options.layout  %}
+{% else %}
+    <input type="hidden" id="grid_count_page_{{ page }}" value="{{ count }}">
+    <div class="h-full text-center w-full py-8 md:py-16 lg:py-32">Não existem resultados!</div>
+{% endif %}
+
+

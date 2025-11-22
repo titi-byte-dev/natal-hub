@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'HelveticaNeue';
+    font-weight: normal;
+    font-display: swap;
+    font-style: normal;
+    src: url("../../fonts/HelveticaNeueMedium.ttf") format("ttf");
+}
+@font-face {
+    font-family: 'HelveticaNeueCond';
+    font-weight: bold;
+    font-display: swap;
+    font-style: normal;
+    src: url("../../fonts/HelveticaNeue-CondensedBold.ttf") format("ttf"),
+         url("../../fonts/HelveticaNeue-CondensedBold.woff") format("woff"),
+         url("../../fonts/HelveticaNeue-CondensedBold.woff2") format("woff2");
+}

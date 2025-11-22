@@ -1,0 +1,28 @@
+{
+  "name": "tailwind-css-theme",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "postcss css/app.css -o build/css/app.css",
+    "watch": "postcss css/app.css -o build/css/app.css --watch --verbose",
+    "prod": "postcss css/app.css -o build/css/app.min.css --env production"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/typography": "^0.3.1",
+    "alpinejs": "^2.7.3",
+    "autoprefixer": "^10.0.2",
+    "cssnano": "^4.1.10",
+    "postcss": "^8.1.9",
+    "postcss-cli": "^8.3.0",
+    "postcss-color-function": "^4.1.0",
+    "postcss-hexrgba": "^2.0.1",
+    "postcss-import": "^13.0.0",
+    "precss": "^4.0.0",
+    "tailwindcss": "^2.0.1",
+    "tailwindcss-debug-screens": "^1.1.0",
+    "tailwindcss-filters": "^3.0.0"
+  },
+  "devDependencies": {}
+}

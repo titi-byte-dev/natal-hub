@@ -1,0 +1,923 @@
+@import "./font/font.css";
+/*@import 'yourcssfile.css';*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    font-size: 22px;
+    font-family: HelveticaNeue, sans-serif;
+    @apply leading-snug;
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: HelveticaNeueCond, sans-serif;
+    text-transform: uppercase;
+}
+h1{
+    @apply text-5xl;
+}
+h2{
+    @apply text-3xl;
+}
+h3{
+    @apply text-2xl;
+}
+h4{
+    @apply text-xl;
+}
+.bounce {
+    animation-name: bounce;
+    animation-timing-function: cubic-bezier(0.280, 0.840, 0.420, 1);
+}
+@keyframes bounce {
+    0%   { transform: translateX(-50%) translateY(0); }
+    10%  { transform: translateX(-50%) translateY(0); }
+    30%  { transform: translateX(-50%) translateY(-7px); }
+    50%  { transform: translateX(-50%) translateY(0); }
+    57%  { transform: translateX(-50%) translateY(-2px); }
+    64%  { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(0); }
+}
+.search-wrapper {
+    border-bottom-color: #66b22e;
+}
+
+.form-field {
+    border-bottom-color: #66b22e;
+    color: #fff;
+}
+.form-field input {
+    font-size: 18px;
+}
+.form-field ::placeholder{
+    color: rgba(114, 114, 114, 0.76);
+    font-size: 18px;
+    font-family: HelveticaNeue, sans-serif;
+}
+.form-field ::-webkit-input-placeholder{
+    color: rgba(114, 114, 114, 0.76);
+    font-size: 18px;
+    font-family: HelveticaNeue, sans-serif;
+}
+.form-field :-ms-input-placeholder{
+    color: rgba(114, 114, 114, 0.76);
+    font-size: 18px;
+    font-family: HelveticaNeue, sans-serif;
+}
+#profile-form .form-field ::placeholder{
+    color: #fff;
+}
+#profile-form .form-field ::-webkit-input-placeholder{
+    color: #fff;
+}
+#profile-form .form-field :-ms-input-placeholder{
+    color: #fff;
+}
+.form-select-wrapper select option:disabled{
+    color: #b7b7b7;
+    opacity: 1;
+}
+.form-field .form-label{
+    font-size: 18px;
+}
+.form-field select{
+    font-size: 18px;
+    background-color: #e10514;
+    &svg{
+         stroke: #fff;
+     }
+    &:hover{
+         cursor: pointer;
+     }
+}
+#vote .form-field input ,
+#confirm-email .form-field input {
+    font-size: 18px;
+    color: #000;
+    font-family: HelveticaNeueCond, sans-serif;
+}
+#confirm-email .form-field.form-group::after {
+    content: "\0040\globalservs.com";
+    color: #736f6f;
+    font-size: 18px;
+    font-family: HelveticaNeueCond, sans-serif;
+}
+#vote .form-field input{
+    text-align: center;
+}
+#modal-bg{
+    z-index: -9;
+}
+#modal-image{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#premio{
+    z-index: 9;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.triangle-red{
+    background-image: url("../../images/triangles/triangle-up-large-red.svg");
+    background-repeat: no-repeat;
+    width: 700px;
+}
+.triangle-green{
+    background-repeat: no-repeat;
+    width: 700px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.h-tree-section{
+    height: 320px;
+}
+.bottom-tree-section-right-top{
+    bottom: 500px;
+}
+.bottom-tree-section-right{
+    bottom: 200px;
+}
+[x-cloak] { display: none; }
+
+select {
+
+    &:focus {
+        @apply ring-0 !important;
+     }
+
+     option:disabled {
+         @apply text-gray
+     }
+}
+
+input:focus {
+     @apply ring-0 !important;
+}
+.list-num{
+    top: -60px;
+}
+#participation-grid {
+
+    #grid > div{
+        border-left: 10px transparent solid;
+        border-right: 10px transparent solid;
+    }
+    .filters {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        flex: 0 0 auto;
+
+
+          label {
+              display: -webkit-box;
+              display: -webkit-flex;
+              display: -ms-flexbox;
+              display: flex;
+              flex: 0 0 auto;
+              background: #eee;
+              border-radius: 30px;
+              padding: 3px 15px;
+              font-size: 14px;
+              color: #979797;
+              line-height: 25px;
+              max-height: 30px;
+
+            &.isSelected {
+                background: red;
+                color: #fff;
+                img{
+                    filter: brightness(2);
+                }
+             }
+        }
+        input {
+            visibility: hidden;
+        }
+    }
+}
+.form-input-file.dropzone {
+    @apply border-green !important;
+}
+
+.svg-filters {
+    @apply w-0 h-0 absolute;
+    left: -9999rem;
+}
+.filter-by{
+    white-space: nowrap;
+}
+.item-active {
+    @apply scale-150 shadow-2xl z-20 border-none;
+
+    .overlay {
+        height: 40px;
+        bottom: -2px;
+        @apply bg-red text-white px-4 py-2;
+
+        .hidden {
+            display: block;
+        }
+
+        svg {
+            height: 16px;
+        }
+
+    }
+
+    img {
+        filter: none;
+    }
+}
+
+.vid-modal {
+    background-color: rgba(0, 0, 0, 0.85);
+    video{
+        height:40vh;
+    }
+}
+.btn{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: underline;
+    @apply text-red;
+    @apply font-helveticaCond;
+
+    &.text-white{
+        color: #fff;
+     }
+}
+#profile-form .dropzone{
+    background-color: transparent;
+    text-align: center;
+    border: 2px solid #66b22e;
+
+    .dz-preview{
+        height: 80px;
+        .dz-remove{
+            font-size: 22px;
+        }
+        .dz-image{
+            height: 70px;
+        }
+        .dz-details{
+            padding: 1em 1em;
+        }
+    }
+    .dz-default.dz-message{
+        color: #fff;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+}
+.notices {
+    @apply w-full p-4 border border-2 mb-8;
+    border-width: 2px;
+
+    &.green {
+         border-color: green;
+    }
+
+     &.red {
+        background-color: darkred;
+        color: white;
+        border-color: darkred;
+      }
+}
+
+#form .notices {
+    position: absolute;
+    top: 0;
+    &.green {
+        @apply text-green bg-white text-center;
+     }
+}
+
+.login_page {
+    #body {
+        @apply flex-grow flex flex-col justify-center;
+    }
+}
+
+.pagination-nav {
+    margin-top: -3px;
+}
+
+:root {
+    --size: 75px;
+    --clr-bg: #272324;
+    --clr1: #e1baba;
+    --clr2: #e19ca2;
+    --clr3: #e15b61;
+    --clr4: #e12e39;
+    --clr5: #e10514;
+}
+
+.spinner {
+    --animation-duration: 3000ms;
+    position: relative;
+    width: 75px;
+    height: 75px;
+}
+
+.spinner-item {
+    position: absolute;
+    top: calc(50% - 75px / 2);
+    left: calc(50% - 75px / 2);
+    width: 75px;
+    height: 75px;
+    background: var(--clr-spinner);
+    border-radius: 50%;
+    animation: spinner6 var(--animation-duration) ease-in-out infinite;
+}
+
+@keyframes spinner6 {
+    0%,
+    100% {
+        transform: scale(0.25);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.spinner-item:nth-of-type(1) {
+    --clr-spinner: #e12e39;
+}
+
+.spinner-item:nth-of-type(2) {
+    --clr-spinner: #e10514;
+    animation-delay: calc(var(--animation-duration) / -2);
+}
+
+.text-active-pagination {
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+.vid-modal{
+
+    #modal-name{
+        top: 75px;
+        z-index: 9;
+    }
+    button{
+        right: 98px;
+        top: 100px;
+        z-index: 9;
+    }
+    #rating{
+        bottom: 60px;
+    }
+}
+
+.scroll-down{
+    left: 50%;
+    /*transform: translate(-50%, -50%);*/
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    transform-origin: bottom;
+}
+#participation-grid{
+    /*min-height: 1365px;*/
+    select{
+        background-color: transparent;
+    }
+}
+#logos{
+     left: 50%;
+     transform: translate(-50%, -50%);
+ }
+#main_participacoes{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+    background-image: url('../../images/participacoes.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 1920px auto;
+}
+#main_plantacao{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+    background-image: url('../../images/plantacao.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 1520px auto;
+}
+#main_lancamento{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+    background-image: url('../../images/lancamento.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 1520px auto;
+}
+#main_vencedor{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+    background-image: url('../../images/vencedor.svg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 1520px auto;
+    #vencedor {
+        min-height: 1272px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 60px;
+    h3{
+        color: #fff;
+    }
+    h5{
+        color: #fff;
+    }
+    p {
+        color: #fff;
+    }
+    img#winner{
+        width: 400px;
+    }
+    }
+}
+
+.form-input-file.dropzone {
+    position: relative;
+    min-height: 70px;
+    border-radius: 3px;
+    margin-bottom: .85rem;
+    border: 2px dashed #ccc;
+    color: #aaa;
+    padding: 0.5rem;
+}
+.form-input-file input {
+    display: none;
+}
+.dropzone .dz-message {
+    margin:0 !important;
+}
+
+.modal_wrapper {
+    min-height: 792px;
+}
+
+@media (max-height: 800px) {
+    .modal_wrapper {
+        min-height: auto;
+        height: 100%;
+    }
+}
+
+/*sm*/
+@media (max-width: 640px) {
+    .modal_wrapper {
+        min-height: auto;
+        margin-top: 100px;
+    }
+    #logos{
+        top: 90px;
+    }
+    .scroll-down{
+        top: 420px;
+    }
+    #participation-grid {
+        .filters {
+            label {
+                img {
+                    max-height: 22px;
+                }
+            }
+        }
+    }
+    #main_participacoes{
+        background-size: 480px auto;
+        background-image: url('../../images/participacoes_mobile.svg');
+        #header{
+            min-height: 1010px;
+        }
+        #steps{
+            min-height: 1270px;
+        }
+        #ganhar{
+            min-height: 280px;
+        }
+        #form{
+            min-height: 700px;
+        }
+    }
+    #main_vencedor{
+        background-size: 480px auto;
+        background-image: url('../../images/vencedor-mob.svg');
+        #header{
+            min-height: 833px;
+        }
+        #vencedor {
+            min-height: 1000px;
+            margin-bottom: 55px;
+
+            img#winner{
+                width: 300px;
+            }
+            h3{
+                font-size: 30px;
+            }
+            h5{
+                font-size: 24px;
+            }
+            p {
+                color: #fff;
+            }
+        }
+    }
+    #main_plantacao{
+        background-size:  480px auto;
+        background-image: url('../../images/plantacao_mobile.svg');
+        #header{
+            min-height: 980px;
+        }
+        #form{
+            min-height: 700px;
+        }
+    }
+    #main_lancamento{
+        background-size:  480px auto;
+        background-image: url('../../images/lancamento_mobile.svg');
+        #header{
+            min-height: 1090px;
+        }
+        #steps{
+            min-height: 1220px;
+        }
+        #ganhar{
+            min-height: 300px;
+        }
+        #form{
+            min-height: 625px;
+        }
+    }
+    .vid-modal{
+        background-color: #fff;
+        #modal-bg{
+            width: 100%;
+        }
+        #modal-image{
+            width: 240px;
+        }
+        #modal-name{
+            top: 13px;
+            p{
+                max-width: 87px;
+                text-align: center;
+            }
+        }
+        button{
+            left: 30px;
+            top: -15px;
+        }
+        #rating{
+            bottom: 17px;
+        }
+    }
+    html{
+        font-size: 16px;
+    }
+
+    #confirm-email .form-field{
+        margin: 15px 0;
+    }
+}
+@media (min-width: 414px) {
+    .vid-modal {
+
+        #modal-name {
+            top: 35px;
+
+        }
+        #rating{
+            bottom: 37px;
+        }
+
+    }
+}
+/*md*/
+@media (min-width: 640px) {
+    #main_participacoes {
+        background-size: 1024px auto;
+        background-image: url('../../images/participacoes_md.svg');
+        #header{
+            min-height: 780px;
+        }
+        #steps{
+            min-height: 665px;
+        }
+        #ganhar{
+            min-height: 250px;
+        }
+        #form{
+            min-height: 520px;
+        }
+    }
+
+    #main_vencedor{
+        background-size: 1024px auto;
+        background-image: url('../../images/vencedor.svg');
+        #header{
+            min-height: 642px;
+        }
+        #vencedor {
+            min-height: 858px;
+            margin-bottom: 60px;
+
+            img#winner{
+                width: 300px;
+            }
+        }
+    }
+    #main_plantacao{
+        background-size: 1024px auto;
+        #header{
+            min-height: 660px;
+        }
+        #form{
+            min-height: 480px;
+        }
+    }
+    #main_lancamento{
+        background-size: 1024px auto;
+        background-image: url('../../images/lancamento.svg');
+        #steps{
+            min-height: 613px;
+        }
+        #ganhar{
+            min-height: 213px;
+        }
+    }
+    #form{
+        #profile-form{
+            input, select, ::placeholder, label{
+                font-size: 16px;
+            }
+        }
+    }
+    #header{
+        min-height: 690px;
+        #logos{
+            top: 113px;
+        }
+    }
+    .scroll-down{
+        top: 440px;
+    }
+    html{
+        font-size: 17px;
+    }
+    .vid-modal{
+        #rating{
+            bottom: 60px;
+        }
+        #modal-name{
+            top: 60px;
+            p{
+                max-width: 87px;
+                text-align: center;
+            }
+        }
+    }
+}
+/*lg*/
+@media (min-width: 1024px) {
+
+    #main_vencedor{
+        background-image: url('../../images/vencedor.svg');
+        background-size: 1520px auto;
+        #header{
+            min-height: 953px;
+        }
+        #vencedor {
+            min-height: 1272px;
+            margin-bottom: 60px;
+            img#winner{
+                width: 400px;
+            }
+        }
+    }
+    #main_participacoes{
+        background-size: 1280px auto;
+        background-image: url('../../images/participacoes.svg');
+        #header{
+            min-height: 890px;
+        }
+        #ganhar {
+            min-height: 300px;
+        }
+        #form{
+            min-height: 550px;
+        }
+        #steps{
+            min-height: 745px;
+        }
+    }
+    #main_plantacao{
+        background-size: 1278px auto;
+        background-image: url('../../images/plantacao.svg');
+    }
+    #main_lancamento{
+        background-size: 1537px auto;
+        background-image: url('../../images/lancamento.svg');
+        #header{
+            min-height: 1050px;
+        }
+        #steps{
+            min-height: 800px;
+        }
+        #form{
+            min-height: auto;
+        }
+    }
+    #header{
+        min-height: 890px;
+        #logos{
+            top: 133px;
+        }
+    }
+
+    #confirm-email .form-field{
+        margin: 10px 0;
+    }
+    #form{
+        min-height: 750px;
+    }
+    .scroll-down{
+        top: 550px;
+    }
+    .vid-modal{
+        #modal-bg{
+            width: 550px;
+        }
+        #modal-image{
+            width: 300px;
+        }
+        #modal-name{
+            top: 35px;
+        }
+        button{
+            right: 77px;
+            top: 77px;
+        }
+        #rating{
+            bottom: 36px;
+        }
+    }
+    html{
+        font-size: 20px;
+    }
+}
+
+/*xl*/
+@media (min-width: 1280px) {
+    #main_participacoes{
+        background-size: 1536px auto;
+        background-image: url('../../images/participacoes.svg');
+        #header{
+            min-height: 1058px;
+        }
+        #ganhar{
+            min-height: 350px;
+        }
+        #form{
+            min-height: 700px;
+        }
+        #steps{
+            min-height: 850px;
+        }
+    }
+    #form .notices {
+        top: 3rem;
+    }
+    #form{
+        #profile-form{
+            input, select, ::placeholder, label{
+                font-size: 18px;
+         }
+        }
+    }
+    #header{
+        #logos{
+            top: 160px;
+        }
+    }
+    #ganhar{
+        min-height: 335px;
+    }
+    #main_plantacao {
+        background-size: 1535px auto;
+        background-image: url('../../images/plantacao.svg');
+        #header{
+            min-height: 980px;
+        }
+        #form{
+            min-height: 720px;
+        }
+    }
+    #main_lancamento{
+        background-size: 1537px auto;
+        background-image: url('../../images/lancamento.svg');
+        #header{
+            min-height: 1058px;
+        }
+        #steps{
+            min-height: 850px;
+        }
+        #ganhar {
+            min-height: 340px;
+        }
+        #form{
+            min-height: auto;
+        }
+    }
+    .scroll-down{
+        top: 650px;
+    }
+    html{
+        font-size: 22px;
+    }
+}
+/*2xl*/
+@media (min-width: 1536px) {
+    #main_participacoes{
+        background-image: url('../../images/participacoes.svg');
+        #steps{
+            min-height: 900px;
+        }
+        #form{
+            min-height: 705px;
+        }
+    }
+    #main_plantacao{
+        background-image: url('../../images/plantacao.svg');
+    }
+    #main_lancamento{
+        background-size: 1537px auto;
+        background-image: url('../../images/lancamento.svg');
+        #header{
+            min-height: 1058px;
+        }
+        #steps{
+            min-height: 900px;
+        }
+        #ganhar {
+            min-height: 340px;
+        }
+        #form{
+            min-height: auto;
+        }
+    }
+    #header{
+        #logos{
+            top: 165px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+    .scroll-down{
+        top: 650px;
+    }
+    .vid-modal{
+        #modal-bg{
+            width: 720px;
+        }
+        #modal-image{
+            width: 400px;
+        }
+        #modal-name{
+            top: 65px;
+        }
+        button{
+            right: 105px;
+            top: 105px;
+        }
+        #rating{
+            bottom: 60px;
+        }
+    }
+    html{
+        font-size: 22px;
+    }
+}

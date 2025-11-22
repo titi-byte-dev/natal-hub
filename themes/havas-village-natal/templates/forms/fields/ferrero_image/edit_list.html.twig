@@ -1,0 +1,17 @@
+{% set image_field = value|first.name %}
+{% set image_file = object.media.images|first.url %}
+
+{% if object.foto and not object.media.images|length %}
+    {{ dump(object.username) }}
+{% endif %}
+
+{%- if image_field -%}
+    <span><i class="published fa fa-check-circle" style="color: green"></i></span>
+{%- else -%}
+    {% if image_file %}
+    <span><i class="unpublished fa fa-times-circle" style="color: darkred"></i></span>
+    {% endif %}
+{%- endif -%}
+{%- if image_file -%}
+<a class="pl-1" href="{{ image_file }}" target="_blank"><span> <i class="published fa fa-eye"></i></span></a>
+{% endif %}

@@ -1,0 +1,11 @@
+object:
+  cache:
+    index:
+      enabled: true
+      lifetime: 60
+    object:
+      enabled: true
+      lifetime: 600
+    render:
+      enabled: true
+      lifetime: 600
